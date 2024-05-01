@@ -140,7 +140,7 @@ if args.config_file is None:
             args.model_id,
             torchscript=args.deployment_mode, 
             trust_remote_code=True,
-            user_token=user_token
+            token=user_token
         )
     else:
         config = AutoConfig.from_pretrained(
