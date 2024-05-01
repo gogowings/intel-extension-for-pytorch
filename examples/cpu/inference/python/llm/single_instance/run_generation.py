@@ -132,9 +132,20 @@ model_type = next(
 )
 model_class = MODEL_CLASSES[model_type]
 if args.config_file is None:
-    config = AutoConfig.from_pretrained(
-        args.model_id, torchscript=args.deployment_mode, trust_remote_code=True
-    )
+    # from use_auth_token from environment variable
+    import os
+    user_token = os.getenv("HF_USER_TOKEN", None)
+    if user_token is not None:
+        config = AutoConfig.from_pretrained(
+            args.model_id,
+            torchscript=args.deployment_mode, 
+            trust_remote_code=True,
+            user_token=user_token
+        )
+    else:
+        config = AutoConfig.from_pretrained(
+            args.model_id, torchscript=args.deployment_mode, trust_remote_code=True
+        )
 else:
     config = AutoConfig.from_pretrained(
         args.config_file, torchscript=args.deployment_mode, trust_remote_code=True
